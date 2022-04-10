@@ -128,7 +128,7 @@ class HBNBCommand(cmd.Cmd):
                 item = item.split('=')
                 if '"' in item[1]:
                     item[1] = item[1].strip('"')
-                    item[1] = item[1].replace('"', '\"')
+#                    item[1] = item[1].replace('"', '\"')
                     item[1] = item[1].replace('_', ' ')
                     setattr(new_instance, str(item[0]), str(item[1]))
                 elif '.' in item[1]:
