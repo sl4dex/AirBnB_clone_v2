@@ -131,7 +131,8 @@ class HBNBCommand(cmd.Cmd):
                 elif '.' in item[1]:
                     setattr(new_instance, str(item[0]), float(item[1]))
                 else:
-                    setattr(new_instance, str(item[0]), int(item[1]))
+                    if item[1].isdigit():
+                        setattr(new_instance, str(item[0]), int(item[1]))
         print(new_instance.id)
         storage.save()
 
