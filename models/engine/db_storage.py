@@ -5,6 +5,9 @@ New engine DBStorage: (models/engine/db_storage.py)
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from os import getenv
+from models.state import State
+from models.city import City
+from models.base_model import BaseModel, Base
 
 
 class DBStorage():
@@ -22,9 +25,6 @@ class DBStorage():
                     getenv(HBNB_MYSQL_HOST),
                     getenv(HBNB_MYSQL_DB)),
                 pool_pre_ping=True)
-        Base.metadata.create_all(engine)
-        Session = sessionmaker(engine)
-        self.__session = Session()
         if getenv(HBNB_ENV) is 'test':
             Base.metadata.drop_all(engine)
 
@@ -41,3 +41,23 @@ class DBStorage():
             key = 'cls' + '.' + str(self.id)
             all_items.update(key = item)
         return all_items
+
+    def new(self, obj):
+        """add object to the current database session"""
+        self.__session.add(obj)
+
+    def save(self):
+        """commit all changes of the current database session"""
+        self.__session.commit()
+
+    def delete(self, obj=None):
+        """ delete from the current database session """
+        if obj is not None:
+            self.__session.delete(obj)
+
+    def reload(self):
+        """ create the current database session and create all tables """
+        Base.metadata.create_all(engine)
+        Session = scoped_session(sessionmaker(engine, expire_on_commit=False))
+        self.__session = Session()
+        
