@@ -14,6 +14,9 @@ class FileStorage:
             return FileStorage.__objects
         else:
             obj_aux = {}
+            cls = str(cls).split('.')
+            cls = cls[-1].split("'")
+            cls = cls[0]
             for key, val in self.__objects.items():
                 if cls in key:
                     obj_aux[key] = val
