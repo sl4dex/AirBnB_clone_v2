@@ -16,7 +16,6 @@ class FileStorage:
             obj_aux = {}
             for cls, val in self.__objects.items():
                 obj_aux[cls] = val
-            print(obj_aux)
             return obj_aux
 
     def new(self, obj):
