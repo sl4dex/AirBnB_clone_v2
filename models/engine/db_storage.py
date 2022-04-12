@@ -33,10 +33,13 @@ class DBStorage():
         returns the dictionary __objects
         """
         all_items = {}
+        todos = []
         if cls is not None:
-            todos = self.__session.query(cls)
+            todos.append(self.__session.query(cls))
         else:
-            todos = self.__session.query()
+            clases = ['User', 'State', 'City', 'Amenity', 'Place', 'Review']
+            for clase in clases:
+                todos.append(self.__session.query(clase))
         for item in todos:
             key = 'cls' + '.' + str(self.id)
             all_items.update(key = item)

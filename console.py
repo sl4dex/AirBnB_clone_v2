@@ -118,7 +118,7 @@ class HBNBCommand(cmd.Cmd):
     def do_create(self, args):
         """ Create an object of any class"""
         args = args.split()
-        if not args[0]:
+        if len(args) < 1:
             print("** class name missing **")
             return
         elif args[0] not in HBNBCommand.classes:
@@ -221,7 +221,7 @@ class HBNBCommand(cmd.Cmd):
                 print("** class doesn't exist **")
                 return
             if getenv('HBNB_TYPE_STORAGE') == 'db':
-                print(DBStorage.all(args))
+                print_list.append(str(DBStorage.all(args)))
             else:
                 for k, v in storage._FileStorage__objects.items():
                     if k.split('.')[0] == args:
