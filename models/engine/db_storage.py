@@ -4,6 +4,7 @@ New engine DBStorage: (models/engine/db_storage.py)
 """
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
+from sqlalchemy.sql import text
 from os import getenv
 from models.state import State
 from models.city import City
@@ -32,17 +33,17 @@ class DBStorage():
         """
         returns the dictionary __objects
         """
+        from console import HBNBCommand
         all_items = {}
-        todos = []
         if cls is not None:
-            todos.append(self.__session.query(cls))
+            todos = self.__session.query(cls).all()
         else:
             clases = ['User', 'State', 'City', 'Amenity', 'Place', 'Review']
             for clase in clases:
-                todos.append(self.__session.query(clase))
+                todos = self.__session.query(clase).all()
         for item in todos:
-            key = 'cls' + '.' + str(self.id)
-            all_items.update(key = item)
+            key = (item.__class__.__name__) + '.' + (item.id)
+            all_items[key] = item
         return all_items
 
     def new(self, obj):
