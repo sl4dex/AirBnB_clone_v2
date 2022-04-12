@@ -3,7 +3,7 @@
 New engine DBStorage: (models/engine/db_storage.py)
 """
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, scoped_session
 from os import getenv
 from models.state import State
 from models.city import City
@@ -20,13 +20,13 @@ class DBStorage():
         self.__engine = create_engine(
                 'mysql+mysqldb://{}:{}@{}/{}'.
                 format(
-                    getenv(HBNB_MYSQL_USER),
-                    getenv(HBNB_MYSQL_PWD),
-                    getenv(HBNB_MYSQL_HOST),
-                    getenv(HBNB_MYSQL_DB)),
+                    getenv('HBNB_MYSQL_USER'),
+                    getenv('HBNB_MYSQL_PWD'),
+                    getenv('HBNB_MYSQL_HOST'),
+                    getenv('HBNB_MYSQL_DB')),
                 pool_pre_ping=True)
-        if getenv(HBNB_ENV) is 'test':
-            Base.metadata.drop_all(engine)
+        if getenv('HBNB_ENV') == 'test':
+            Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
         """
@@ -57,7 +57,7 @@ class DBStorage():
 
     def reload(self):
         """ create the current database session and create all tables """
-        Base.metadata.create_all(engine)
-        Session = scoped_session(sessionmaker(engine, expire_on_commit=False))
+        Base.metadata.create_all(self.__engine)
+        Session = scoped_session(sessionmaker(self.__engine, expire_on_commit=False))
         self.__session = Session()
         
