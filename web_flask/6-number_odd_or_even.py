@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """hello hbnb module"""
-from flask import Flask
+from flask import Flask, render_template
 
 
 app = Flask(__name__)
@@ -36,6 +36,21 @@ def py(text="is cool"):
 def num(n):
     """outputs value of <n> if its int"""
     return '%d is a number' % n
+
+
+@app.route('/number_template/<int:n>')
+def num_t(n):
+    """outputs template if <n> is int"""
+    return render_template('5-number.html')
+
+
+@app.route('/number_odd_or_even/<int:n>')
+def num_oddeven(n):
+    """outputs template if <n> is odd or even"""
+    if (n % 2 == 0):
+        return render_template('6-number_odd_or_even.html',
+                               num=n, oddeven="even")
+    return render_template('6-number_odd_or_even.html', num=n, oddeven="odd")
 
 
 if __name__ == "__main__":

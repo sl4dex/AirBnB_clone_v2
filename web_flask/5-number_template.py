@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """hello hbnb module"""
-from flask import Flask
+from flask import Flask, render_template
 
 
 app = Flask(__name__)
@@ -30,6 +30,18 @@ def c(text):
 def py(text="is cool"):
     """outputs value of <text> var"""
     return 'Python %s' % text.replace("_", " ")
+
+
+@app.route('/number/<int:n>')
+def num(n):
+    """outputs value of <n> if its int"""
+    return '%d is a number' % n
+
+
+@app.route('/number_template/<int:n>')
+def num_t(n):
+    """outputs template if <n> is int"""
+    return render_template('5-number.html', num=n)
 
 
 if __name__ == "__main__":
