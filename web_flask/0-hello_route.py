@@ -12,5 +12,6 @@ def hello_world():
     """outputs hello on root dir"""
     return 'Hello, HBNB!'
 
+
 if __name__ == "__main__":
     app.run()
